@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contagem Regressiva</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #043349 0%, #146286 100%);
+            font-family: 'Comic Neue', cursive, sans-serif;
+            overflow-y: auto;
+            position: relative;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow:
+                0 0 7px #00e5ff,
+                0 0 15px #00b8d4,
+                0 0 20px #00acc1;
+        }
+
+        #timer {
+            font-size: 4rem;
+            font-weight: 700;
+            text-shadow:
+                0 0 10px #00e5ff,
+                0 0 20px #00b8d4,
+                0 0 30px #00acc1;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #message {
+            display: none;
+            font-size: 1.25rem;
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            text-shadow:
+                0 0 5px #00e5ff;
+            background: rgba(255 255 255 / 0.15);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        #photos {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .photo {
+            width: 150px;
+            height: 150px;
+            border: 5px solid #00b8d4;
+            border-radius: 15px;
+            background-size: cover;
+            background-position: center;
+            box-shadow:
+                0 0 15px #00e5ff,
+                0 0 30px #00b8d4;
+            transition: transform 0.3s ease;
+        }
+
+        .photo:hover {
+            transform: scale(2.05);
+            box-shadow:
+                0 0 25px #00e5ff,
+                0 0 40px #00b8d4;
+            cursor: default;
+        }
+
+        /* Falling sparkles */
+        .sparkle {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: #00e5ff;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 5px #00e5ff);
+            opacity: 0.8;
+            animation-name: sparkle-fall;
+            animation-duration: 4s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle-fall {
+            0% {
+                transform: translateY(-20px) scale(1);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Emoji styling */
+        #emoji-row {
+            margin-top: 15px;
+            font-size: 3rem;
+            animation: pulse 2s infinite alternate;
+            user-select: none;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px #00e5ff);
+            }
+
+            100% {
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 15px #00e5ff);
+            }
+        }
+
+        /* Button styling when timer ends */
+        #celebrate-btn {
+            display: none;
+            background: linear-gradient(45deg, #00b8d4, #00e5ff);
+            border: none;
+            border-radius: 30px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow:
+                0 0 15px #00e5ff,
+                0 0 25px #00b8d4;
+            transition: background 0.3s ease;
+        }
+
+        #celebrate-btn:hover {
+            background: linear-gradient(45deg, #00e5ff, #00b8d4);
+        }
+
+        @media (max-width: 768px) {
+            #photos {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .photo {
+                width: 90vw;
+                height: 90vw;
+            }
+
+            h1 {
+                font-size: 2rem;
+                text-align: center;
+                padding: 0 10px;
+            }
+
+            #timer {
+                font-size: 2.5rem;
+            }
+
+            #celebrate-btn {
+                font-size: 1.2rem;
+                padding: 12px 24px;
+            }
+
+            #message {
+                font-size: 1rem;
+                padding: 15px;
+            }
+
+            #emoji-row {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .photo:hover {
+                transform: none;
+                box-shadow: 0 0 15px #00e5ff, 0 0 30px #00b8d4;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Aniversário da minha Sheila</h1>
+    <div id="timer"></div>
+    <button id="celebrate-btn">Clique aqui!</button>
+    <div id="message"></div>
+    <div id="emoji-row" aria-label="Emojis divertidos" role="img">❤❤❤❤❤❤❤❤❤❤❤ <br> <br></div>
+    <div id="photos">
+        <div class="photo" style="background-image: url('../foto5.jpg');" title="Foto 1"></div>
+        <div class="photo" style="background-image: url('../foto6.gif');" title="Foto 2"></div>
+        <div class="photo" style="background-image: url('../foto4.jpg');" title="Foto 3"></div>
+        <div class="photo" style="background-image: url('../foto7.jpg');" title="Foto 4"></div>
+        <div class="photo" style="background-image: url('../foto8.jpg');" title="Foto 5"></div>
+        <div class="photo" style="background-image: url('../foto9.jpg');" title="Foto 6"></div>
+    </div>
+
+    <script>
+        // Countdown timer
+        const countdownDate = new Date(new Date().getTime() + 10 * 1000);
+        const timerElement = document.getElementById("timer");
+        const messageElement = document.getElementById("message");
+        const celebrateBtn = document.getElementById("celebrate-btn");
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            if (distance <= 0) {
+                clearInterval(interval);
+                timerElement.style.display = 'none';
+                celebrateBtn.style.display = 'inline-block';
+                messageElement.style.display = 'none'; // hidden until button clicked
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            timerElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        celebrateBtn.addEventListener('click', () => {
+            celebrateBtn.style.display = 'none';
+            messageElement.innerHTML = `
+        🎉 Parabéns, Meu Amor! 🎂<br><br>
+        Meu amor, hoje é o seu dia, e é mais que especial, porque é mais um ano da sua vida completado de muitos outros que virão ao meu lado, sou sortudo por te ter comigo, quero viver com você a vida toda, você é a maior razão dos meus sorrisos e das minhas risadas, sua energia é contagiante e eu te amo demais por isso, amo o jeito como você se importa comigo nos mínimos detalhes e amo sua personalidade, carisma e jeito de ser, amo também seu sorriso, seus olhos, seu cabelo, seu umbigo, seu pé, toda vc ❤. Eu quero que vc saiba que é a pessoa mais importante na minha vida, a mulher que irei casar e mãe dos meus filhos, e enfim.... que o Senhor abençoe muito vc e parabéns pelos 19 anos!!! ❤<br><br>
+        Eu Te amo muito! 💖
+        `;
+            messageElement.style.display = 'block';
+            messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        });
+
+        updateTimer();
+        const interval = setInterval(updateTimer, 1000);
+
+        // Sparkle effect
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.animationDuration = (3 + Math.random() * 3) + 's';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 6000);
+        }
+        setInterval(createSparkle, 300);
+
+    </script>
+</body>
+
+</html>
